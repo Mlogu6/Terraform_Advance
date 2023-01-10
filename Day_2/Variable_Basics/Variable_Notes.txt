@@ -1,0 +1,94 @@
+Variable Basic :-
+------------------
+
+In real time project the Terraform scripts are maintained in seprated files like variable.tf, main.tf, output.tf, provider.tf depends on the requirement
+
+In this scenario we are creating 3 different file
+
+main.tf        ----> contain all the scripts to create the resources
+provider.tf    ----> contain only the provider details
+variable.tf    ----> contains the values of all the defined variables
+
+While executing Terraform apply it always combine all the .tf files present in the directory and execute the script accordingly that it what Terraform nature is.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variables when prompted :-
+--------------------------
+
+If the default value is not set in the variable.tf like below -
+
+Before ->
+---------
+
+variable "aws_instance_count" {
+    description = "No of instance count to create"
+    type = number
+    default = 1
+}
+
+
+After ->
+--------
+
+variable "aws_instance_count" {
+    description = "No of instance count to create"
+    type = number
+}
+
+While executing the terraform apply or plan it will prompt to mention the value or input.
+
+Variables override with CLI :-
+------------------------------
+
+If the default value is updated in the variable.tf file but we need to change it without change it in the file. We can execute the below command
+
+Values in the variable.tf file:-
+--------------------------------
+
+variable "aws_instance_count" {
+    description = "No of instance count to create"
+    type = number
+    default = 1
+}
+
+Command to change the default value
+------------------------------------
+
+terraform apply --var="aws_instance_count=5"
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Variable override with ENV :-
+---------------------------
+
+We can set the Terraform variables in the linux machine itself by executing the below command
+
+Values in the variable.tf file:-
+--------------------------------
+
+variable "aws_instance_count" {
+    description = "No of instance count to create"
+    type = number
+    default = 1
+}
+
+Setting up the terraform variable in linux machine :-
+-----------------------------------------------------
+
+export TF_VAR_aws_instance_count=5
+
+Now, if we execute the terraform apply or plan it will pick the value (5) from variable updated in Linux machine only, it won't consider the value mentioned in the .tf file
+
+
+Priority order:-
+
+1. Variables override with CLI - Command
+2. Variable override with ENV - Linux variable
+3. Default variable mentioned in the .tf file
+
+
+
+
+
+
+
